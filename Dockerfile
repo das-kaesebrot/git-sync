@@ -22,4 +22,6 @@ VOLUME [ "/home/gitsync/.ssh", "/var/opt/gitsync/config" ]
 
 RUN python -m pip install -r requirements.txt
 
+USER gitsync
+
 CMD [ "/usr/bin/env", "python3", "gitsync.py" ]
