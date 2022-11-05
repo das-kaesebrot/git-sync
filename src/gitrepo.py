@@ -12,8 +12,10 @@ class GitRepo:
     primary_remote: GitRemote = None
     secondary_remotes: list[GitRemote] = None
     keyfile: str = None
+    name: str = None
 
-    def __init__(self, remotes, cache_root_dir, keyfile = None) -> None:
+    def __init__(self, name, remotes, cache_root_dir, keyfile = None) -> None:
+        self.name = name
         self.remotes = remotes
 
         if keyfile:
