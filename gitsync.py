@@ -17,11 +17,11 @@ def main():
     config = Config()
     config.print()
 
-    helper = GitSyncHelper(config.FILECONF.get("repos"), config.cache_root_dir, config.keyfile_root)
-    cron = config.CRON_INTERVAL
+    helper = GitSyncHelper(config.FILECONF.get("repos"), config.cache_root_dir, config.keyfile)
+    cron = config.cron_interval_parsed
 
     if config.run_cron:
-        logging.debug(f"Running in cron mode with cron interval '{config.CRON_INTERVAL}'")
+        logging.debug(f"Running in cron mode with cron interval '{config.cron_interval_parsed}'")
         while True:
             sleeptime = cron.next(default_utc=True)
             next_run_date = cron.next(default_utc=True, return_datetime=True)
