@@ -1,4 +1,5 @@
 config:
+  run_type: cron
   cron_interval: "0 5 * * *"
   keyfile: "/home/gitsync/.ssd/id_ed25519"
 
