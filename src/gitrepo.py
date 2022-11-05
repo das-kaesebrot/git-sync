@@ -1,4 +1,4 @@
-from asyncio.log import logger
+import logging
 import os
 import random
 import string
@@ -99,14 +99,14 @@ class GitRepo:
 
         # keyfile override
         if self.keyfile:
-            logger.debug(f"Using keyfile '{self.keyfile}'")
+            logging.debug(f"Using keyfile '{self.keyfile}'")
             env = {**env, "GIT_SSH_COMMAND": f"ssh -i {self.keyfile} -o IdentitiesOnly=yes"}
 
         cmd = f"git {cmd}"
-        logger.debug(f"Executing command '{cmd}'")
+        logging.debug(f"Executing command '{cmd}'")
 
         if run_in_dir:
-            logger.debug(f"Running in directory '{self.cached_path}'")
+            logging.debug(f"Running in directory '{self.cached_path}'")
             result = subprocess.run(args=cmd.split(' '), env=env, cwd=self.cached_path, capture_output=True)
         else:
             result = subprocess.run(args=cmd.split(' '), env=env, capture_output=True)
