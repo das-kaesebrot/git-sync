@@ -29,6 +29,7 @@ class GitRepo:
         self._setup()
 
     def _setup(self):
+        self._add_trusted_host_keys()
         self._create_cached_dir()
         self._initial_clone()
         self._add_secondary_remotes_to_repo()
@@ -81,6 +82,43 @@ class GitRepo:
 
         return self.secondary_remotes
 
+    def _add_trusted_host_keys(self):
+        trusted_keys = ""
+        for remote in self.remotes:
+
+            cmd = "ssh-keyscan"
+            giturl = giturlparse.parse(remote.remote_url)
+
+            host = giturl.host
+            if giturl.port:
+                cmd += f" -p {giturl.port}"
+
+            cmd += f" {host}"
+
+            logging.info(f"Getting host keys for '{remote.remote_url}': '{host}'")
+            result = subprocess.run(cmd.split(' '), capture_output=True)
+            result.check_returncode()
+            trusted_keys += result.stdout.decode()
+
+        dirpath = "/home/gitsync/.ssh"
+        path = os.path.join(dirpath, "known_hosts")
+
+        logging.debug(f"Trusted keys: \n{trusted_keys}")
+
+        if not os.path.exists(dirpath):
+            os.mkdir(path=dirpath, mode=stat.S_IRWXU)
+
+        with open(path, 'a') as f:
+            f.write(trusted_keys)
+
+        uniquelines = None
+        with open(path) as f:
+            uniquelines = set(f.readlines())
+
+        with open(path, 'w') as f:
+            f.writelines(uniquelines)
+
+        os.chmod(path, stat.S_IWUSR | stat.S_IRUSR)
 
     def _create_cached_dir(self):        
         # clean the directory before creating
