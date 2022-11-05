@@ -19,6 +19,7 @@ def main():
     cron = config.CRON_INTERVAL
 
     if config.run_cron:
+        logging.debug(f"Running in cron mode with cron interval '{config.CRON_INTERVAL}'")
         while True:
             sleeptime = cron.next(default_utc=True)
             next_run_date = cron.next(default_utc=True, return_datetime=True)
@@ -28,6 +29,7 @@ def main():
             helper.sync_all()
 
     else:
+        logging.debug(f"Running once")
         helper.sync_all()
 
 if __name__ == "__main__":
