@@ -47,6 +47,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          github-token: ${{ github.token }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
