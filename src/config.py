@@ -10,6 +10,10 @@ class Config:
             "valid_vals": ["once", "cron"],
             "default": "cron"
         },
+        "cache_root_dir": {
+            "valid_vals": None,
+            "default": "/var/opt/gitsync/cache"
+        },
         "config_file": {
             "valid_vals": None,
             "default": "/var/opt/gitsync/config/config.yml"
