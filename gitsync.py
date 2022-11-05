@@ -3,12 +3,14 @@
 import sys
 import logging
 import time
+import os
 
 from src.config import Config
 from src.gitsynchelper import GitSyncHelper
 
 def main():
     logging.basicConfig(format='[%(asctime)s] [%(levelname)s] %(message)s', level=logging.DEBUG)
+    logging.debug(f"Running as UID {os.getuid()}")
 
     config = Config()
     config.print()
