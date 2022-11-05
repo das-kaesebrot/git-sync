@@ -19,7 +19,9 @@ def main():
     if config.run_cron:
         while True:
             sleeptime = cron.next(default_utc=True)
+            next_run_date = cron.next(default_utc=True, return_datetime=True)
             logging.info(f"Sleeping for {sleeptime}s until next cron job run")
+            logging.info(f"Next run at {next_run_date.astimezone().isoformat()}")
             time.sleep(sleeptime)
             helper.sync_all()
 
