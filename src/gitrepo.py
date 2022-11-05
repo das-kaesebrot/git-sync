@@ -62,7 +62,7 @@ class GitRepo:
         secondary_remotes = self._get_secondary_remotes()
 
         for remote in secondary_remotes:
-            self._run_git_command(f"add --mirror=push {remote.name} {remote.remote_url}")
+            self._run_git_command(f"remote add --mirror=push {remote.name} {remote.remote_url}")
 
     def _get_primary_remote(self) -> GitRemote:
         if not self.primary_remote:
