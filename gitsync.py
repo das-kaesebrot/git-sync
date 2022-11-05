@@ -17,7 +17,7 @@ def main():
     config = Config()
     config.print()
 
-    helper = GitSyncHelper(config.FILECONF.get("repos"), config.ARGS.get("cache_root_dir"), config.keyfile_root)
+    helper = GitSyncHelper(config.FILECONF.get("repos"), config.cache_root_dir, config.keyfile_root)
     cron = config.CRON_INTERVAL
 
     if config.run_cron:
