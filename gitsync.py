@@ -11,6 +11,7 @@ from src.gitsynchelper import GitSyncHelper
 
 def main():
     logging.basicConfig(format='[%(asctime)s] [%(levelname)s] %(message)s', level=logging.DEBUG)
+    logging.warning("NOT PRODUCTION READY - USE WITH CAUTION")
     logging.debug(f"Running as UID {os.getuid()}")
 
     config = Config()
