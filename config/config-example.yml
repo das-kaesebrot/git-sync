@@ -9,4 +9,4 @@ repos:
       url: "git@github.com:torvalds/linux"
       source: true
     gitlab: 
-      url: "ssh://git@gitlab.com:22/torvalds/linux.git"
+      url: "ssh://git@gitlab.example.com:54321/torvalds/linux.git"
