@@ -72,6 +72,14 @@ class Config:
                 raise AttributeError(f"Unsupported file extension for config file: {file}")
 
         conf = self.FILECONF.get("config")
+
+        if "run_type" in conf:
+            run_type = conf.get("run_type")
+            if run_type == "cron":
+                self.run_cron = True
+            else:
+                self.run_cron = False
+
         if "cron_interval" in conf:
             self.CRON_INTERVAL = CronTab(conf.get("cron_interval"))
         
