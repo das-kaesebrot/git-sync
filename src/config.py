@@ -37,9 +37,9 @@ class Config:
         for arg in self.REQUIRED_ARGS + self.OPTIONAL_ARGS:
             envkey = f"{self.ENV_PREFIX}_{arg.upper()}"
             logging.debug(f"Getting environment variable {envkey}")
-            val = os.getenv(envkey)            
+            val = os.getenv(envkey).strip('\"')
             if not val:
-                val = self._get_key_from_conf_file(arg)
+                val = self._get_key_from_conf_file(arg).strip('\"')
             
             if val:
                 self.__setattr__(arg, val)
