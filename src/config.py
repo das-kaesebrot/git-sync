@@ -12,7 +12,7 @@ class Config:
         },
         "config_file": {
             "valid_vals": None,
-            "default": "/var/opt/gitsync/config.yml"
+            "default": "/var/opt/gitsync/config/config.yml"
         },
     }
     
