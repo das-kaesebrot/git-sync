@@ -26,9 +26,9 @@ class GitRepo:
 
         self.cached_path = os.path.join(cache_root_dir, name)
 
-        self.setup()
+        self._setup()
 
-    def setup(self):
+    def _setup(self):
         self._create_cached_dir()
         self._initial_clone()
         self._add_secondary_remotes_to_repo()
