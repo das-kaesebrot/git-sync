@@ -1,0 +1,18 @@
+config:
+  cron_interval: 
+
+remote_prefixes:
+  github:
+    keyfile: "/home/gitsync/.ssd/id_ed25519"
+    url: "git@github.com"
+    source: true
+  gitlab:
+    keyfile: "/home/gitsync/.ssd/id_ed25519"
+    url: "git@gitlab.com"
+    source: true
+
+repos:
+  my_repo_1:
+    paths:
+      github: "torvalds/linux"
+      gitlab: "torvalds/linux"
