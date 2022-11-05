@@ -40,13 +40,13 @@ class GitRepo:
 
     def _initial_clone(self):
         used_remote = self._get_primary_remote()
-        args = f"clone --mirror --origin {used_remote.name} {used_remote.remote_url} {self.cached_path}"
+        args = f"clone --mirror {used_remote.remote_url} {self.cached_path}"
         self._run_git_command(args, run_in_dir=False)
 
     def _pull_primary_remote(self):
         # self._fetch_prune_on_primary()
         used_remote = self._get_primary_remote()
-        return self._run_git_command(f"remote update --prune {used_remote.name}")
+        return self._run_git_command(f"remote update --prune origin")
 
     def _fetch_prune_on_primary(self) -> subprocess.CompletedProcess:        
         used_remote = self._get_primary_remote()
