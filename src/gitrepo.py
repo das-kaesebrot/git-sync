@@ -91,7 +91,14 @@ class GitRepo:
             giturl = giturlparse.parse(remote.remote_url, check_domain=False)
 
             host = giturl.host
-            if giturl.port:
+            port = giturl.port
+
+            # workaround for wrong parsing results for some reason
+            if ":" in host:
+                host = host.split(':')[0]
+                port = host.split(':')[1]
+
+            if port:
                 cmd += f" -p {giturl.port}"
 
             cmd += f" {host}"
@@ -151,3 +158,4 @@ class GitRepo:
 
         result.check_returncode()
         return result
+    
