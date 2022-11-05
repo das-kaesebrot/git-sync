@@ -33,10 +33,14 @@ if __name__ == "__main__":
     except (KeyboardInterrupt, InterruptedError) as e:
         print(f"{e=}")
         sys.exit(0)
-        
-    except Exception as e:
-        print(f"Encountered exception: {e=}")
+
+    except CalledProcessError as e:
+        logging.exception(f"Encountered exception: {e=}, {e.stdout=}, {e.stderr=}")
         sys.exit(1)
         
+    except Exception as e:
+        logging.exception(f"Encountered exception: {e=}")
+        sys.exit(1)
+
     finally:
         print("Shutting down")
