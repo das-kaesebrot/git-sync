@@ -21,7 +21,7 @@ def main():
     cron = config.cron_interval_parsed
 
     if config.run_cron:
-        logging.debug(f"Running in cron mode with cron interval '{config.cron_interval_parsed}'")
+        logging.debug(f"Running in cron mode with cron interval '{config.cron_interval}'")
         while True:
             sleeptime = cron.next(default_utc=True)
             next_run_date = cron.next(default_utc=True, return_datetime=True)
