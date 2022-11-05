@@ -1,6 +1,7 @@
 import logging
 import os
 import random
+import stat
 import string
 import subprocess
 from src.gitremote import GitRemote
