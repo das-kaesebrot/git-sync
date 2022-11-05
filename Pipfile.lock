@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d997ecd673b215b2326ad4816b88992dfa5114b476564e3f691a4ffd8305fb8d"
+            "sha256": "8691dc7357244ce495abb9e329c6a875ebfdcd2f1e260c8db94227875c1ee473"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -22,6 +22,14 @@
             ],
             "index": "pypi",
             "version": "==0.23.0"
+        },
+        "giturlparse": {
+            "hashes": [
+                "sha256:04ba1a3a099c3093fa8d24a422913c6a9b2c2cd22bcffc939cf72e3e98f672d7",
+                "sha256:2595ab291d30717cda8474b874c9fd509f1b9802ad7f6968c36a45e4b13eb337"
+            ],
+            "index": "pypi",
+            "version": "==0.10.0"
         },
         "pyyaml": {
             "hashes": [

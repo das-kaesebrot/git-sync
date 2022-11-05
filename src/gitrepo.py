@@ -5,6 +5,7 @@ import string
 import subprocess
 from src.gitremote import GitRemote
 import shutil
+import giturlparse
 
 class GitRepo:
     remotes: list[GitRemote]
