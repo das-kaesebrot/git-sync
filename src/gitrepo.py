@@ -24,11 +24,7 @@ class GitRepo:
                 raise FileNotFoundError(f"Couldn't find key file at {keyfile}")
             self.keyfile = keyfile
 
-        while True:
-            dir = self._get_random_string()
-            if not os.path.exists(dir):
-                self.cached_path = os.path.join(cache_root_dir, dir)
-                break
+        self.cached_path = os.path.join(cache_root_dir, name)
 
         self.setup()
 
