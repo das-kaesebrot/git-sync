@@ -88,7 +88,7 @@ class GitRepo:
         for remote in self.remotes:
 
             cmd = "ssh-keyscan"
-            giturl = giturlparse.parse(remote.remote_url)
+            giturl = giturlparse.parse(remote.remote_url, check_domain=False)
 
             host = giturl.host
             if giturl.port:
