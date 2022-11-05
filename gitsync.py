@@ -37,3 +37,6 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Encountered exception: {e=}")
         sys.exit(1)
+        
+    finally:
+        print("Shutting down")
