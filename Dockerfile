@@ -18,6 +18,8 @@ COPY --chown=1100:1100 . /var/opt/gitsync
 
 WORKDIR /var/opt/gitsync
 
+VOLUME [ "/home/gitsync/.ssh", "/var/opt/gitsync/config" ]
+
 RUN python -m pip install -r requirements.txt
 
 CMD [ "/usr/bin/env", "python3", "gitsync.py" ]
