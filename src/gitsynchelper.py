@@ -6,15 +6,10 @@ class GitSyncHelper:
 
     def __init__(self, repos: dict, cache_root_dir: str, keyfile_root: str = None) -> None:
         self._create_gitrepos_from_config(repos, cache_root_dir, keyfile_root)
-        self._setup_all()
 
     def sync_all(self):
         for repo in self.gitrepos:
             repo.sync()
-
-    def _setup_all(self):
-        for repo in self.gitrepos:
-            repo.setup()
 
     def _create_gitrepos_from_config(self, repos: dict, cache_root_dir: str, keyfile_root: str = None):
         if not isinstance(repos, dict):
