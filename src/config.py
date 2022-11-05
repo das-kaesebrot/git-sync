@@ -27,6 +27,9 @@ class Config:
 
     CRON_INTERVAL: CronTab
 
+    keyfile_root: str = None
+    run_cron: bool
+
     def __init__(self) -> None:
         self._get_env_config()
         self._get_file_config()
@@ -48,6 +51,12 @@ class Config:
             else:
                 self.ARGS[arg] = vals.get("default")
 
+        run_type = self.ARGS.get("run_type")
+        if run_type == "cron":
+            self.run_cron = True
+        else:
+            self.run_cron = False
+
     def _get_file_config(self) -> None:
         file = self.ARGS.get("config_file")
         if not os.path.isfile(file):
@@ -61,6 +70,14 @@ class Config:
                 self.FILECONF = json.load(f)
             else:
                 raise AttributeError(f"Unsupported file extension for config file: {file}")
+
+        conf = self.FILECONF.get("config")
+        if "cron_interval" in conf:
+            self.CRON_INTERVAL = CronTab(conf.get("cron_interval"))
+        
+        if "keyfile" in conf:
+            self.keyfile_root = conf.get("keyfile")
+
 
         
                 
