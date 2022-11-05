@@ -55,7 +55,7 @@ class Config:
                 raise AttributeError(f"Missing required config setting(s): '{missing_settings}'")
 
         if self.cron_interval:
-            self.cron_interval_parsed = CronTab(self.cron_interval_parsed)
+            self.cron_interval_parsed = CronTab(self.cron_interval)
         
         if self.run_type == "cron":
             self.run_cron = True
