@@ -7,6 +7,7 @@ import subprocess
 from src.gitremote import GitRemote
 import shutil
 import giturlparse
+import re
 
 class GitRepo:
     remotes: list[GitRemote]
@@ -113,6 +114,13 @@ class GitRepo:
                 result = host.split(':')
                 host = result[0]
                 port = result[1]
+            
+            match = re.match(r"[^/]+", port)
+
+            # yet another hacky workaround for removing subfolders that got wrongly parsed into the port
+            if port and match:
+                port = match[0]
+
 
             if port:
                 cmd += f" -p {port}"
