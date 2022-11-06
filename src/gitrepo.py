@@ -42,16 +42,20 @@ class GitRepo:
         self._add_secondary_remotes_to_repo()
 
     def sync(self):
+        logging.info(f"Starting repo sync")
         self._pull_primary_remote()
         self._push_secondary_remotes()
 
     def _initial_clone(self):
         used_remote = self._get_primary_remote()
+        
+        logging.info(f"Setup: Cloning source repo '{used_remote.remote_url}'")
         args = f"clone --mirror {used_remote.remote_url} {self.cached_path}"
         self._run_git_command(args, run_in_dir=False, keyfile=self._get_keyfile(used_remote))
 
     def _pull_primary_remote(self):
         used_remote = self._get_primary_remote()
+        logging.info(f"Pulling remote '{used_remote.name}' ({used_remote.remote_url})")
         return self._run_git_command(f"remote update --prune origin", keyfile=self._get_keyfile(used_remote))
 
     def _fetch_prune_on_primary(self) -> subprocess.CompletedProcess:        
@@ -62,12 +66,14 @@ class GitRepo:
         secondary_remotes = self._get_secondary_remotes()
 
         for remote in secondary_remotes:
+            logging.info(f"Pushing to remote '{remote.name}' ({remote.remote_url})")
             self._run_git_command(f"push --mirror {remote.name}", keyfile=self._get_keyfile(remote))
 
     def _add_secondary_remotes_to_repo(self):
         secondary_remotes = self._get_secondary_remotes()
 
         for remote in secondary_remotes:
+            logging.info(f"Adding push remote '{remote.name}' ({remote.remote_url})")
             self._run_git_command(f"remote add --mirror=push {remote.name} {remote.remote_url}", keyfile=self._get_keyfile(remote))
 
     def _get_primary_remote(self) -> GitRemote:
@@ -135,7 +141,10 @@ class GitRepo:
 
         os.chmod(path, stat.S_IWUSR | stat.S_IRUSR)
 
-    def _create_cached_dir(self):        
+    def _create_cached_dir(self):
+        
+        logging.info(f"Setting up cache directory for repo '{self.name}': '{self.cached_path}'")
+
         # clean the directory before creating
         if os.path.exists(self.cached_path):
             shutil.rmtree(self.cached_path)
