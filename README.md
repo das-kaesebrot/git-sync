@@ -4,7 +4,7 @@ This docker image allows you to synchronize a single source repository with one 
 
 ## Pulling the image
 ```bash
-docker pull ghcr.io/das-kaesebrot/git-sync
+docker pull daskaesebrot/git-sync
 ```
 
 ## Configuration
@@ -87,7 +87,7 @@ docker run \
     -e GITSYNC_KEYFILE="/var/opt/gitsync/keys/git_key_ed25519" \
     -e GITSYNC_RUN_TYPE="cron" \
     -e GITSYNC_CRON_INTERVAL="0 5 * * *" \
-    ghcr.io/das-kaesebrot/git-sync
+    daskaesebrot/git-sync
 ```
 
 ...or using a `docker-compose.yml`:
@@ -96,7 +96,7 @@ version: '2'
 
 services:
   gitsync:
-    image: ghcr.io/das-kaesebrot/git-sync
+    image: daskaesebrot/git-sync
     restart: always
     volumes:
       - /path/to/your/config/config.yml:/var/opt/gitsync/config/config.yml:ro
