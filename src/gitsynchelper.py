@@ -22,16 +22,20 @@ class GitSyncHelper:
             remotes = []
             for repo_name, repo_def in definition.items():
                 source = False
+                keyfile = None
 
                 if "source" in repo_def:
                     source = repo_def.get("source")
 
-                remotes.append(GitRemote(name=repo_name, remote_url=repo_def.get("url"), is_source=source))
+                if "keyfile" in repo_def:
+                    keyfile = repo_def.get("keyfile")
 
-            keyfile = keyfile_root
+                remotes.append(GitRemote(name=repo_name, remote_url=repo_def.get("url"), is_source=source, keyfile=keyfile))
+
+            keyfile = None
             if "keyfile" in definition:
                 keyfile = definition.get("keyfile")
     
-            repo = GitRepo(name, remotes=remotes, cache_root_dir=cache_root_dir, keyfile=keyfile)
+            repo = GitRepo(name, remotes=remotes, cache_root_dir=cache_root_dir, keyfile=keyfile, keyfile_root=keyfile_root)
 
             self.gitrepos.append(repo)

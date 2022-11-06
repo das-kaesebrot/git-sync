@@ -16,7 +16,7 @@ Environment variables always take precedence over variables from the config file
 
 - `GITSYNC_RUN_TYPE`: Can be either `once` or `cron`. Defaults to `once`.
 - `GITSYNC_CRON_INTERVAL`: Cron interval. Defaults to an empty value.
-- `GITSYNC_KEYFILE`: Path to a keyfile to be used as the root file, unless it's overriden in a repository config. Defaults to an empty value.
+- `GITSYNC_KEYFILE`: Path to a keyfile to be used as the root file, unless it's overriden in a repository or remote config. Defaults to an empty value.
 - `GITSYNC_CACHE_ROOT_DIR`: Directory inside the container to use for caching repositories. Defaults to `/var/opt/gitsync/cache`
 - `GITSYNC_CONFIG_FILE`: Config file to use when starting the image. Defaults to `/var/opt/gitsync/config/config.yml`
 
@@ -45,12 +45,16 @@ config:
 repos:
   my_repo_1:
     # optional keyfile override for repositories. If this key isn't defined, config.keyfile will be used.
-    keyfile: "/var/opt/gitsync/keys/id_rsa"
+    keyfile: "/var/opt/gitsync/keys/repository_key"
     github:
       url: "git@github.com:torvalds/linux"
       # repos.[repo].[remote].source defaults to false if omitted, all other remotes are treated as sync targets
       # only a single source can be defined
       source: true
+
+      # optional keyfile override for remotes. If this key isn't defined, repos.[repo].keyfile will be used.
+      keyfile: "/var/opt/gitsync/keys/custom_remote_key"
+
     gitlab: 
       url: "ssh://git@gitlab.example.com:54321/torvalds/linux.git"
 ```
@@ -65,9 +69,11 @@ repos:
     },
     "repos": {
         "my_repo_1": {
+            "keyfile": "/var/opt/gitsync/keys/repository_key",
             "github": {
                 "url": "git@github.com:torvalds/linux",
-                "source": true
+                "source": true,
+                "keyfile": "/var/opt/gitsync/keys/custom_remote_key"
             },
             "gitlab": {
                 "url": "ssh://git@gitlab.example.com:54321/torvalds/linux.git"
