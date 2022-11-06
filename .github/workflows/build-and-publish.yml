@@ -13,8 +13,6 @@ on:
   push:
     tags:
       - "*"
-    branches:
-      - "main"
 
 env:
   IMAGE_NAME: daskaesebrot/git-sync
@@ -56,4 +54,5 @@ jobs:
           push: true
           tags: | 
             ${{ steps.meta.outputs.tags }}
+            ${{ env.IMAGE_NAME }}:latest
           labels: ${{ steps.meta.outputs.labels }}
