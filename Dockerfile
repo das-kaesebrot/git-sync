@@ -1,15 +1,12 @@
-FROM python:bullseye
+FROM python:alpine
 
-ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=true
 
-RUN apt-get update && \
-    apt-get install -y git && \
-    apt-get install -y python3-pip && \
-    apt-get clean
+RUN apk add --no-cache \
+    openssh-client \
+    git
 
-RUN groupadd -g 1100 gitsync
-RUN useradd -m -u 1100 -g 1100 gitsync
+RUN adduser -u 1100 -D gitsync
 
 RUN mkdir -pv /var/opt/gitsync
 RUN chown -R 1100:1100 /var/opt/gitsync
