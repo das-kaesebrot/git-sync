@@ -4,7 +4,7 @@ class GitRemote:
     is_source: bool
     remote_url: str
     name: str
-    keyfile: str
+    keyfile: str = None
 
     def __init__(self, name, remote_url, is_source: bool = False, keyfile: str = None) -> None:
         self.name = name
