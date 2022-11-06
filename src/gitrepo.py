@@ -16,10 +16,12 @@ class GitRepo:
     keyfile: str = None
     keyfile_root: str = None
     name: str = None
+    trust_all_host_keys: bool = True
 
-    def __init__(self, name, remotes, cache_root_dir, keyfile = None) -> None:
+    def __init__(self, name, remotes, cache_root_dir, keyfile = None, keyfile_root = None, trust_all_host_keys = True) -> None:
         self.name = name
         self.remotes = remotes
+        self.trust_all_host_keys
 
         if keyfile:
             if not os.path.isfile(keyfile):
@@ -36,7 +38,8 @@ class GitRepo:
         self._setup()
 
     def _setup(self):
-        self._add_trusted_host_keys()
+        if self.trust_all_host_keys: self._add_trusted_host_keys()
+        
         self._create_cached_dir()
         self._initial_clone()
         self._add_secondary_remotes_to_repo()
