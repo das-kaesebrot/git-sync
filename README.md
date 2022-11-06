@@ -3,6 +3,7 @@
 This docker image allows you to synchronize a single source repository with one or more target repositories. It supports a cron-style run type as well as a single run.
 
 ## Pulling the image
+Docker hub: https://hub.docker.com/r/daskaesebrot/git-sync
 ```bash
 docker pull daskaesebrot/git-sync
 ```
