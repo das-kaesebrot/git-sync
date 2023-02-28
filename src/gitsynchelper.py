@@ -2,6 +2,12 @@ from src.gitremote import GitRemote
 from src.gitrepo import GitRepo
 
 class GitSyncHelper:
+
+    KEY_SOURCE="source"
+    KEY_KEYFILE="keyfile"
+    KEY_EXCLUDED_REFS="excluded-refs"
+    KEY_URL="url"
+
     gitrepos: list[GitRepo] = []
 
     def __init__(self, repos: dict, cache_root_dir: str, keyfile_root: str = None) -> None:
@@ -15,27 +21,31 @@ class GitSyncHelper:
         if not isinstance(repos, dict):
             raise AttributeError(f"Repo definition is not a dict. Given value: {repos}")
 
-        for name, definition in repos.items():
-            if not isinstance(definition, dict):
-                raise AttributeError(f"Remote definition is not a dict. Given value: {definition}")
+        for repo_name, repo_definition in repos.items():
+            if not isinstance(repo_definition, dict):
+                raise AttributeError(f"Remote definition is not a dict. Given value: {repo_definition}")
             
             remotes = []
-            for repo_name, repo_def in definition.items():
+            for remote_name, remote_definition in repo_definition.items():
                 source = False
                 keyfile = None
+                excluded_refs = None
 
-                if "source" in repo_def:
-                    source = repo_def.get("source")
+                if GitSyncHelper.KEY_SOURCE in remote_definition:
+                    source = remote_definition.get(GitSyncHelper.KEY_SOURCE)
 
-                if "keyfile" in repo_def:
-                    keyfile = repo_def.get("keyfile")
+                if GitSyncHelper.KEY_KEYFILE in remote_definition:
+                    keyfile = remote_definition.get(GitSyncHelper.KEY_KEYFILE)
+                
+                if (GitSyncHelper.KEY_EXCLUDED_REFS in remote_definition) and (isinstance(remote_definition.get(GitSyncHelper.KEY_EXCLUDED_REFS), list)):
+                    excluded_refs = remote_definition.get(GitSyncHelper.KEY_EXCLUDED_REFS)
 
-                remotes.append(GitRemote(name=repo_name, remote_url=repo_def.get("url"), is_source=source, keyfile=keyfile))
+                remotes.append(GitRemote(name=remote_name, remote_url=remote_definition.get(GitSyncHelper.KEY_URL), is_source=source, keyfile=keyfile, excluded_refs=excluded_refs))
 
             keyfile = None
-            if "keyfile" in definition:
-                keyfile = definition.get("keyfile")
+            if GitSyncHelper.KEY_KEYFILE in repo_definition:
+                keyfile = repo_definition.get(GitSyncHelper.KEY_KEYFILE)
     
-            repo = GitRepo(name, remotes=remotes, cache_root_dir=cache_root_dir, keyfile=keyfile, keyfile_root=keyfile_root)
+            repo = GitRepo(repo_name, remotes=remotes, cache_root_dir=cache_root_dir, keyfile=keyfile, keyfile_root=keyfile_root)
 
             self.gitrepos.append(repo)
