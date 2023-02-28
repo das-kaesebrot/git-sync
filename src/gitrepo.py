@@ -43,11 +43,13 @@ class GitRepo:
         
         self._create_cached_dir()
         self._initial_clone()
+        self._do_fsck()
         self._add_secondary_remotes_to_repo()
 
     def sync(self):
         logging.info(f"Starting repo sync")
         self._pull_primary_remote()
+        self._do_fsck()
         self._push_secondary_remotes()
 
     def _initial_clone(self):
@@ -61,10 +63,13 @@ class GitRepo:
         used_remote = self._get_primary_remote()
         logging.info(f"Pulling remote '{used_remote.name}' ({used_remote.remote_url})")
         return self._run_git_command(f"remote update --prune origin", keyfile=self._get_keyfile(used_remote))
+    
+    def _do_fsck(self):
+        return self._run_git_command(f"fsck")
 
     def _fetch_prune_on_primary(self) -> subprocess.CompletedProcess:        
         used_remote = self._get_primary_remote()
-        return self._run_git_command(f"git fetch --prune {used_remote.name}", keyfile=self._get_keyfile(used_remote))
+        return self._run_git_command(f"fetch --prune {used_remote.name}", keyfile=self._get_keyfile(used_remote))
 
     def _push_secondary_remotes(self):
         secondary_remotes = self._get_secondary_remotes()
