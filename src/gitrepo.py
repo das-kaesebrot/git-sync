@@ -6,8 +6,8 @@ import string
 import subprocess
 from src.gitremote import GitRemote
 import shutil
-import giturlparse
 import re
+from re import Match
 
 class GitRepo:
     remotes: list[GitRemote]
@@ -106,33 +106,28 @@ class GitRepo:
     def _add_trusted_host_keys(self):
         trusted_keys = ""
         for remote in self.remotes:
-
-            cmd = "ssh-keyscan"
-            giturl = giturlparse.parse(remote.remote_url, check_domain=False)
-
-            host = giturl.host
-            port = giturl.port
-
-            # workaround for wrong parsing results for some reason
-            if ':' in host:
-                print(host)
-                result = host.split(':')
-                host = result[0]
-                port = result[1]
             
-            match = re.match(r"[^/]+", port)
+            giturl_match: Match = re.match(r"(\w+:\/\/)?(.+@)*([\w\d\.]+)(:[\d]+){0,1}\/*(.*)", remote.remote_url)
+            
+            if not giturl_match:
+                raise ValueError(f"Remote URL '{remote.remote_url}' is not a valid git URL")
+            
+            logging.debug(f"Regex match result: {giturl_match.groups()}")
+            
+            if giturl_match.group(1) and giturl_match.group(1) != "ssh://":
+                logging.info(f"Skipping remote '{remote.remote_url}' as it's not a ssh URL")
+                continue
 
-            # yet another hacky workaround for removing subfolders that got wrongly parsed into the port
-            if port and match:
-                port = match[0]
+            host = giturl_match.group(3)
+            port = giturl_match.group(4)[1:] if giturl_match.group(4) else 22
+            
+            # catch false positives for ports
+            if port > 65535 or port < 0:
+                port = 22
+            
+            cmd = f"ssh-keyscan -p {port} {host}"
 
-
-            if port:
-                cmd += f" -p {port}"
-
-            cmd += f" {host}"
-
-            logging.info(f"Getting host keys for '{remote.remote_url}': '{host}'")
+            logging.info(f"Getting host keys for '{remote.remote_url}' host: '{host}:{port}'")
             result = subprocess.run(cmd.split(' '), capture_output=True)
             result.check_returncode()
             trusted_keys += result.stdout.decode()
