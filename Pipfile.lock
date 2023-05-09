@@ -1,12 +1,10 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8691dc7357244ce495abb9e329c6a875ebfdcd2f1e260c8db94227875c1ee473"
+            "sha256": "14bde20ab2096c46d8d581775760d9505575538ceea06097df9a8819e86c079e"
         },
         "pipfile-spec": 6,
-        "requires": {
-            "python_version": "3.9"
-        },
+        "requires": {},
         "sources": [
             {
                 "name": "pypi",
@@ -18,10 +16,10 @@
     "default": {
         "crontab": {
             "hashes": [
-                "sha256:ca79dede9c2f572bb32f38703e8fddcf3427e86edc838f2ffe7ae4b9ee2b0733"
+                "sha256:89477e3f93c81365e738d5ee2659509e6373bb2846de13922663e79aa74c6b91"
             ],
             "index": "pypi",
-            "version": "==0.23.0"
+            "version": "==1.0.1"
         },
         "giturlparse": {
             "hashes": [
