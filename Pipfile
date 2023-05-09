@@ -6,6 +6,5 @@ name = "pypi"
 [packages]
 crontab = "*"
 pyyaml = "*"
-giturlparse = "*"
 
 [dev-packages]
