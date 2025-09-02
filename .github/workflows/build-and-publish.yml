@@ -50,7 +50,7 @@ jobs:
           context: .
           push: true
           tags: | 
-            ${{ steps.meta.outputs.tags }}
+            ${{ vars.DOCKERHUB_IMAGENAME }}:${{ steps.meta.outputs.tags }}
             ${{ vars.DOCKERHUB_IMAGENAME }}:latest
             ${{ vars.DOCKERHUB_IMAGENAME }}:${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
