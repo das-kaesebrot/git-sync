@@ -1,3 +1,4 @@
+import logging
 from src.gitremote import GitRemote
 from src.gitrepo import GitRepo
 
@@ -7,15 +8,21 @@ class GitSyncHelper:
     KEY_KEYFILE="keyfile"
     KEY_EXCLUDED_REFS="excluded-refs"
     KEY_URL="url"
+    
+    _logger: logging.Logger
 
     gitrepos: list[GitRepo] = []
 
     def __init__(self, repos: dict, cache_root_dir: str, keyfile_root: str = None) -> None:
+        self._logger = logging.getLogger(__name__)
         self._create_gitrepos_from_config(repos, cache_root_dir, keyfile_root)
 
     def sync_all(self):
         for repo in self.gitrepos:
-            repo.sync()
+            try:
+                repo.sync()
+            except Exception:
+                self._logger.exception("Encountered exception")
 
     def _create_gitrepos_from_config(self, repos: dict, cache_root_dir: str, keyfile_root: str = None):
         if not isinstance(repos, dict):
