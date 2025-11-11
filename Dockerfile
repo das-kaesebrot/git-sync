@@ -1,4 +1,13 @@
-FROM python:alpine
+FROM python:3.12-alpine AS build
+
+COPY Pipfile .
+COPY Pipfile.lock .
+
+# generate the requirements file
+RUN python3 -m pip install pipenv && \
+    pipenv requirements > requirements.txt
+
+FROM python:3.12-alpine AS base
 
 ENV PYTHONUNBUFFERED=true
 
@@ -17,6 +26,7 @@ WORKDIR /var/opt/gitsync
 
 VOLUME [ "/var/opt/gitsync/config" ]
 
+COPY --from=build requirements.txt .
 RUN python -m pip install -r requirements.txt
 
 USER gitsync
