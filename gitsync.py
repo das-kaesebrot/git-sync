@@ -11,8 +11,9 @@ from src.gitsynchelper import GitSyncHelper
 
 def main():
     logging.basicConfig(format='[%(asctime)s] [%(levelname)s] %(message)s', level=logging.DEBUG)
-    logging.warning("NOT PRODUCTION READY - USE WITH CAUTION")
-    logging.debug(f"Running as UID {os.getuid()}")
+    logger = logging.getLogger(__name__)
+    logger.warning("NOT PRODUCTION READY - USE WITH CAUTION")
+    logger.debug(f"Running as UID {os.getuid()}")
 
     config = Config()
     config.print()
@@ -21,17 +22,17 @@ def main():
     cron = config.cron_interval_parsed
 
     if config.run_cron:
-        logging.debug(f"Running in cron mode with cron interval '{config.cron_interval}'")
+        logger.debug(f"Running in cron mode with cron interval '{config.cron_interval}'")
         while True:
             helper.sync_all()
             sleeptime = cron.next(default_utc=True)
             next_run_date = cron.next(default_utc=True, return_datetime=True)
-            logging.info(f"Sleeping for {sleeptime}s until next cron job run")
-            logging.info(f"Next run at {next_run_date.astimezone().isoformat()}")
+            logger.info(f"Sleeping for {sleeptime}s until next cron job run")
+            logger.info(f"Next run at {next_run_date.astimezone().isoformat()}")
             time.sleep(sleeptime)
 
     else:
-        logging.debug(f"Running once")
+        logger.debug(f"Running once")
         helper.sync_all()
 
 if __name__ == "__main__":
