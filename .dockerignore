@@ -1,6 +1,4 @@
 .venv/
-Pipfile
-Pipfile.*
 .git/
 .gitignore
 .github/
