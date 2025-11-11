@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-crontab = "*"
-pyyaml = "*"
+crontab = "~=1.0.5"
+pyyaml = "~=6.0.3"
 
 [dev-packages]
