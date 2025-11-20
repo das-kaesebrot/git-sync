@@ -1,4 +1,4 @@
-FROM python:3.12-alpine AS build
+FROM python:3.12-alpine@sha256:d82291d418d5c47f267708393e40599ae836f2260b0519dd38670e9d281657f5 AS build
 
 COPY Pipfile .
 COPY Pipfile.lock .
@@ -7,7 +7,7 @@ COPY Pipfile.lock .
 RUN python3 -m pip install pipenv && \
     pipenv requirements > requirements.txt
 
-FROM python:3.12-alpine AS base
+FROM python:3.12-alpine@sha256:d82291d418d5c47f267708393e40599ae836f2260b0519dd38670e9d281657f5 AS base
 
 ENV PYTHONUNBUFFERED=true
 
