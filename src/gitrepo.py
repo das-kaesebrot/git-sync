@@ -76,10 +76,19 @@ class GitRepo:
         self._run_git_command(
             args, run_in_dir=False, keyfile=self._get_keyfile(used_remote)
         )
+        if self.lfs:
+            logging.info(f"Fetching LFS objects from '{used_remote.name}' ({used_remote.remote_url})")
+            self._run_git_command("lfs fetch --all", keyfile=self._get_keyfile(used_remote))
+            self._run_git_command("lfs update --force")
 
     def _pull_primary_remote(self):
         used_remote = self._get_primary_remote()
         logging.info(f"Pulling remote '{used_remote.name}' ({used_remote.remote_url})")
+        
+        if self.lfs:
+            logging.info(f"Fetching LFS objects from '{used_remote.name}' ({used_remote.remote_url})")
+            self._run_git_command("lfs fetch --all", keyfile=self._get_keyfile(used_remote))
+
         return self._run_git_command(
             f"remote update --prune origin", keyfile=self._get_keyfile(used_remote)
         )
@@ -239,6 +248,9 @@ class GitRepo:
             )
         else:
             result = subprocess.run(args=cmd.split(" "), env=env, capture_output=True)
+
+        if result.returncode == 0:
+            logging.debug(f"stdout=\n{result.stdout.decode()}\n\nstderr=\n{result.stderr.decode()}")
 
         result.check_returncode()
         return result
