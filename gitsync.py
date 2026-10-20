@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-from subprocess import CalledProcessError
-import sys
 import logging
-import time
 import os
+import sys
+import time
+from subprocess import CalledProcessError
 
 from src.config import Config
 from src.gitsynchelper import GitSyncHelper

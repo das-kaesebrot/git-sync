@@ -13,7 +13,7 @@ ENV PYTHONUNBUFFERED=true
 
 RUN apk add --no-cache \
     openssh-client \
-    git
+    git git-lfs
 
 RUN adduser -u 1100 -D gitsync
 

@@ -5,6 +5,7 @@ config:
 
 repos:
   my_repo_1:
+    lfs: true
     github:
       url: "git@github.com:torvalds/linux"
       source: true

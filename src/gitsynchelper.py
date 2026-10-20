@@ -11,6 +11,7 @@ class GitSyncHelper:
     KEY_KEYFILE="keyfile"
     KEY_EXCLUDED_REFS="excluded-refs"
     KEY_URL="url"
+    KEY_LFS="lfs"
     
     _logger: logging.Logger
 
@@ -58,7 +59,11 @@ class GitSyncHelper:
             keyfile = None
             if GitSyncHelper.KEY_KEYFILE in repo_definition:
                 keyfile = repo_definition.get(GitSyncHelper.KEY_KEYFILE)
+            
+            lfs = True
+            if GitSyncHelper.KEY_LFS in repo_definition:
+                lfs = repo_definition.get(GitSyncHelper.KEY_LFS)
     
-            repo = GitRepo(repo_name, remotes=remotes, cache_root_dir=cache_root_dir, keyfile=keyfile, keyfile_root=keyfile_root)
+            repo = GitRepo(repo_name, remotes=remotes, cache_root_dir=cache_root_dir, keyfile=keyfile, keyfile_root=keyfile_root, lfs=lfs)
 
             self.gitrepos.append(repo)

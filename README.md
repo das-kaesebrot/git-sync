@@ -23,7 +23,7 @@ Environment variables always take precedence over variables from the config file
 ### Configuration file
 
 For each entry in `repos`, you may give a simple human-readable name.
-After that define your remotes, also using a human-readable name with the required key `url`. Only SSH-based Git URLs are supported for now. To define a source to be replicated across all other remotes for repository, add the key/value-pair `source: true`. If the source key is not defined for a remote, it will default to `false`.
+After that define your remotes, also using a human-readable name with the required key `url`. Only SSH-based Git URLs are supported for now. To define a source to be replicated across all other remotes for repository, add the key/value-pair `source: true`. If the source key is not defined for a remote, it will default to `false`. You may optionally turn of `git lfs` usage. 
 
 #### YAML-based
 ```yml
@@ -46,6 +46,11 @@ repos:
   my_repo_1:
     # optional keyfile override for repositories. If this key isn't defined, config.keyfile will be used.
     keyfile: "/var/opt/gitsync/keys/repository_key"
+    
+    # whether or not git lfs should be enabled for this repository
+    # defaults to true
+    lfs: true
+
     github:
       url: "git@github.com:torvalds/linux"
       # repos.[repo].[remote].source defaults to false if omitted, all other remotes are treated as sync targets
@@ -70,6 +75,7 @@ repos:
     "repos": {
         "my_repo_1": {
             "keyfile": "/var/opt/gitsync/keys/repository_key",
+            "lfs": true,
             "github": {
                 "url": "git@github.com:torvalds/linux",
                 "source": true,

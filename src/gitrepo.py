@@ -20,6 +20,7 @@ class GitRepo:
     keyfile_root: str = None
     name: str = None
     trust_all_host_keys: bool = True
+    lfs: bool = True
 
     def __init__(
         self,
@@ -29,10 +30,12 @@ class GitRepo:
         keyfile=None,
         keyfile_root=None,
         trust_all_host_keys=True,
+        lfs=True,
     ) -> None:
         self.name = name
         self.remotes = remotes
         self.trust_all_host_keys = trust_all_host_keys
+        self.lfs = lfs
 
         if keyfile:
             if not os.path.isfile(keyfile):
@@ -53,6 +56,8 @@ class GitRepo:
             self._add_trusted_host_keys()
 
         self._create_cached_dir()
+        if self.lfs:
+            self._init_git_lfs()
         self._initial_clone()
         self._do_fsck()
         self._add_secondary_remotes_to_repo()
@@ -192,6 +197,9 @@ class GitRepo:
             shutil.rmtree(self.cached_path)
 
         os.makedirs(self.cached_path, exist_ok=False)
+
+    def _init_git_lfs(self):
+        self._run_git_command("lfs install"),
 
     @staticmethod
     def _get_random_string(length: int = 6) -> str:
