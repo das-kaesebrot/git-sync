@@ -63,7 +63,10 @@ class GitSyncHelper:
             lfs = True
             if GitSyncHelper.KEY_LFS in repo_definition:
                 lfs = repo_definition.get(GitSyncHelper.KEY_LFS)
-    
-            repo = GitRepo(repo_name, remotes=remotes, cache_root_dir=cache_root_dir, keyfile=keyfile, keyfile_root=keyfile_root, lfs=lfs)
-
-            self.gitrepos.append(repo)
+            
+            try:
+                repo = GitRepo(repo_name, remotes=remotes, cache_root_dir=cache_root_dir, keyfile=keyfile, keyfile_root=keyfile_root, lfs=lfs)
+                self.gitrepos.append(repo)
+            except Exception:
+                self._logger.exception("Encountered exception creating sync repository config! Ignoring faulty repo.")
+            
