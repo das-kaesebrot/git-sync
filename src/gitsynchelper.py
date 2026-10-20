@@ -1,6 +1,9 @@
 import logging
+import subprocess
+
 from src.gitremote import GitRemote
 from src.gitrepo import GitRepo
+
 
 class GitSyncHelper:
 
@@ -21,6 +24,9 @@ class GitSyncHelper:
         for repo in self.gitrepos:
             try:
                 repo.sync()
+            except subprocess.CalledProcessError as e:
+                self._logger.exception("Encountered exception while running subprocess")
+                self._logger.error(f"stdout=\n{e.stdout.decode()}\n\nstderr=\n{e.stderr.decode()}")
             except Exception:
                 self._logger.exception("Encountered exception")
 
