@@ -32,7 +32,7 @@ class GitRepo:
     ) -> None:
         self.name = name
         self.remotes = remotes
-        self.trust_all_host_keys
+        self.trust_all_host_keys = trust_all_host_keys
 
         if keyfile:
             if not os.path.isfile(keyfile):
