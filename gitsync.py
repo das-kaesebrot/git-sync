@@ -9,8 +9,11 @@ import os
 from src.config import Config
 from src.gitsynchelper import GitSyncHelper
 
+
 def main():
-    logging.basicConfig(format='[%(asctime)s] [%(levelname)s] %(message)s', level=logging.DEBUG)
+    logging.basicConfig(
+        format="[%(asctime)s] [%(levelname)s] %(message)s", level=logging.DEBUG
+    )
     logger = logging.getLogger(__name__)
     logger.warning("NOT PRODUCTION READY - USE WITH CAUTION")
     logger.debug(f"Running as UID {os.getuid()}")
@@ -18,11 +21,15 @@ def main():
     config = Config()
     config.print()
 
-    helper = GitSyncHelper(config.FILECONF.get("repos"), config.cache_root_dir, config.keyfile)
+    helper = GitSyncHelper(
+        config.FILECONF.get("repos"), config.cache_root_dir, config.keyfile
+    )
     cron = config.cron_interval_parsed
 
     if config.run_cron:
-        logger.debug(f"Running in cron mode with cron interval '{config.cron_interval}'")
+        logger.debug(
+            f"Running in cron mode with cron interval '{config.cron_interval}'"
+        )
         while True:
             helper.sync_all()
             sleeptime = cron.next(default_utc=True)
@@ -35,10 +42,11 @@ def main():
         logger.debug(f"Running once")
         helper.sync_all()
 
+
 if __name__ == "__main__":
     try:
         main()
-        
+
     except (KeyboardInterrupt, InterruptedError) as e:
         print(f"{e=}")
         sys.exit(0)
@@ -46,7 +54,7 @@ if __name__ == "__main__":
     except CalledProcessError as e:
         logging.exception(f"Encountered exception: {e=}, {e.stdout=}, {e.stderr=}")
         sys.exit(1)
-        
+
     except Exception as e:
         logging.exception(f"Encountered exception: {e=}")
         sys.exit(1)
