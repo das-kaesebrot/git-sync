@@ -6,8 +6,9 @@ config:
 repos:
   my_repo_1:
     lfs: true
-    github:
-      url: "git@github.com:torvalds/linux"
-      source: true
-    gitlab: 
-      url: "ssh://git@gitlab.example.com:54321/torvalds/linux.git"
+    remotes:
+      github:
+        url: "git@github.com:torvalds/linux"
+        source: true
+      gitlab: 
+        url: "ssh://git@gitlab.example.com:54321/torvalds/linux.git"
