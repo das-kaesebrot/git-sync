@@ -144,8 +144,9 @@ class GitRepo:
 
         for remote in secondary_remotes:
             logging.info(f"Adding push remote '{remote.name}' ({remote.remote_url})")
+            mirror_option = "" if self.limit_refs else " --mirror=push"
             self._run_git_command(
-                f"remote add --mirror=push {remote.name} {remote.remote_url}",
+                f"remote add{mirror_option} {remote.name} {remote.remote_url}",
                 keyfile=self._get_keyfile(remote),
             )
 
