@@ -42,6 +42,8 @@ class GitSyncHelper:
             
             remotes = []
             for remote_name, remote_definition in repo_definition.items():
+                if remote_name in (GitSyncHelper.KEY_LIMIT_REFS, GitSyncHelper.KEY_LFS, GitSyncHelper.KEY_KEYFILE):
+                    continue
                 source = False
                 keyfile = None
                 excluded_refs = None
