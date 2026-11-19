@@ -51,6 +51,12 @@ repos:
     # defaults to true
     lfs: true
 
+    # optional: sync only these branches and tags. Branch names and tag names
+    # may be given directly; use full refs to distinguish them if needed.
+    limit_refs:
+      - main
+      - refs/tags/v1.0.0
+
     github:
       url: "git@github.com:torvalds/linux"
       # repos.[repo].[remote].source defaults to false if omitted, all other remotes are treated as sync targets
@@ -76,6 +82,7 @@ repos:
         "my_repo_1": {
             "keyfile": "/var/opt/gitsync/keys/repository_key",
             "lfs": true,
+            "limit_refs": ["main", "refs/tags/v1.0.0"],
             "github": {
                 "url": "git@github.com:torvalds/linux",
                 "source": true,

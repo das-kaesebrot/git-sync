@@ -10,6 +10,7 @@ class GitSyncHelper:
     KEY_SOURCE="source"
     KEY_KEYFILE="keyfile"
     KEY_EXCLUDED_REFS="excluded-refs"
+    KEY_LIMIT_REFS="limit_refs"
     KEY_URL="url"
     KEY_LFS="lfs"
     
@@ -63,9 +64,15 @@ class GitSyncHelper:
             lfs = True
             if GitSyncHelper.KEY_LFS in repo_definition:
                 lfs = repo_definition.get(GitSyncHelper.KEY_LFS)
-            
+
+            limit_refs = []
+            if GitSyncHelper.KEY_LIMIT_REFS in repo_definition:
+                configured_limit_refs = repo_definition.get(GitSyncHelper.KEY_LIMIT_REFS)
+                if isinstance(configured_limit_refs, list):
+                    limit_refs = configured_limit_refs
+
             try:
-                repo = GitRepo(repo_name, remotes=remotes, cache_root_dir=cache_root_dir, keyfile=keyfile, keyfile_root=keyfile_root, lfs=lfs)
+                repo = GitRepo(repo_name, remotes=remotes, cache_root_dir=cache_root_dir, keyfile=keyfile, keyfile_root=keyfile_root, lfs=lfs, limit_refs=limit_refs)
                 self.gitrepos.append(repo)
             except Exception:
                 self._logger.exception("Encountered exception creating sync repository config! Ignoring faulty repo.")

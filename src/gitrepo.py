@@ -21,6 +21,7 @@ class GitRepo:
     name: str = None
     trust_all_host_keys: bool = True
     lfs: bool = True
+    limit_refs: list[str] = None
 
     def __init__(
         self,
@@ -31,11 +32,13 @@ class GitRepo:
         keyfile_root=None,
         trust_all_host_keys=True,
         lfs=True,
+        limit_refs=None,
     ) -> None:
         self.name = name
         self.remotes = remotes
         self.trust_all_host_keys = trust_all_host_keys
         self.lfs = lfs
+        self.limit_refs = limit_refs or []
 
         if keyfile:
             if not os.path.isfile(keyfile):
@@ -102,14 +105,39 @@ class GitRepo:
             f"fetch --prune {used_remote.name}", keyfile=self._get_keyfile(used_remote)
         )
 
+    def _get_limit_refspecs(self) -> list[str]:
+        refspecs = []
+        for ref in self.limit_refs:
+            if not isinstance(ref, str) or not ref.strip():
+                continue
+
+            ref = ref.strip()
+            if ref.startswith("refs/"):
+                refspecs.append(ref)
+            else:
+                refspecs.append(f"refs/heads/{ref}")
+                refspecs.append(f"refs/tags/{ref}")
+
+        return refspecs
+
     def _push_secondary_remotes(self):
         secondary_remotes = self._get_secondary_remotes()
 
         for remote in secondary_remotes:
             logging.info(f"Pushing to remote '{remote.name}' ({remote.remote_url})")
-            self._run_git_command(
-                f"push --mirror {remote.name}", keyfile=self._get_keyfile(remote)
-            )
+
+            if self.limit_refs:
+                refspec_args = " ".join(self._get_limit_refspecs())
+                if refspec_args:
+                    self._run_git_command(
+                        f"push {remote.name} {refspec_args}", keyfile=self._get_keyfile(remote)
+                    )
+                else:
+                    logging.info(f"No refs to push to remote '{remote.name}'")
+            else:
+                self._run_git_command(
+                    f"push --mirror {remote.name}", keyfile=self._get_keyfile(remote)
+                )
 
     def _add_secondary_remotes_to_repo(self):
         secondary_remotes = self._get_secondary_remotes()

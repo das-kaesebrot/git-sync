@@ -6,6 +6,9 @@ config:
 repos:
   my_repo_1:
     lfs: true
+    limit_refs:
+      - main
+      - refs/tags/v1.0.0
     github:
       url: "git@github.com:torvalds/linux"
       source: true

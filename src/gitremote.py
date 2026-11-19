@@ -20,7 +20,7 @@ class GitRemote:
 
         self.remote_url = remote_url
         self.is_source = is_source
-        self.excluded_refs = excluded_refs
+        self.excluded_refs = excluded_refs or []
 
         if keyfile:
             if not os.path.isfile(keyfile):
